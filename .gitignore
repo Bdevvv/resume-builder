@@ -1,0 +1,15 @@
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Dependencies & Build Artefacts
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Upstream large reverse-engineering repo clone
+tools/rea/repo/
+
+# Temporary run logs
+*.log

@@ -1,0 +1,187 @@
+#!/usr/bin/env node
+
+/**
+ * Antigravity CLI Resume Tool (resume-cli)
+ * Zero-dependency CLI for building ATS resumes and candidate packages.
+ */
+
+const fs = require("fs");
+const path = require("path");
+const {
+  loadActiveResume,
+  saveActiveResume,
+  generateCandidatePackage,
+  tryExportHeadlessPDF
+} = require("../js/cli-core.js");
+const { analyzeATS } = require("../js/ats-checker.js");
+
+const args = process.argv.slice(2);
+const command = args[0] || "help";
+
+function parseFlags(argv) {
+  const flags = {};
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg.startsWith("--")) {
+      const key = arg.slice(2);
+      const next = argv[i + 1];
+      if (next && !next.startsWith("--")) {
+        flags[key] = next;
+        i++;
+      } else {
+        flags[key] = true;
+      }
+    }
+  }
+  return flags;
+}
+
+const flags = parseFlags(args.slice(1));
+
+switch (command) {
+  case "generate": {
+    const name = flags.name || flags.candidate || "Candidate";
+    const res = generateCandidatePackage({
+      name,
+      title: flags.title,
+      email: flags.email,
+      phone: flags.phone,
+      location: flags.location,
+      summary: flags.summary,
+      template: flags.template || "london",
+      color: flags.color || "#1a91f0",
+      input: flags.input || flags.file,
+      outDir: flags["out-dir"] || flags.out
+    });
+    console.log(`\n🎉 Generated candidate package in:`);
+    console.log(`📂 ${res.outputDir}`);
+    console.log(`📄 Open HTML: file://${res.htmlPath}`);
+    if (res.pdfPath) {
+      console.log(`📥 Vector PDF: file://${res.pdfPath}`);
+    }
+    break;
+  }
+
+  case "create": {
+    const resume = loadActiveResume();
+    if (flags.name) resume.personal.fullName = flags.name;
+    if (flags.title) resume.personal.jobTitle = flags.title;
+    if (flags.email) resume.personal.email = flags.email;
+    if (flags.phone) resume.personal.phone = flags.phone;
+    if (flags.location) resume.personal.location = flags.location;
+    if (flags.summary) resume.summary = flags.summary;
+    if (flags.template) resume.template = flags.template;
+    resume.title = `${resume.personal.fullName || 'Candidate'} - Resume`;
+
+    saveActiveResume(resume);
+    console.log(`[SUCCESS] Updated active resume: ${resume.title}`);
+    break;
+  }
+
+  case "add-job": {
+    const resume = loadActiveResume();
+    resume.experience = resume.experience || [];
+    const bullets = (flags.bullets || "").split(";").map(b => b.trim()).filter(Boolean);
+
+    resume.experience.unshift({
+      id: `exp_${Date.now()}`,
+      title: flags.title || "Job Title",
+      company: flags.company || "Company",
+      location: flags.location || "",
+      startDate: flags.start || "",
+      endDate: flags.end || "",
+      current: Boolean(flags.current),
+      bullets: bullets.length > 0 ? bullets : [""]
+    });
+
+    saveActiveResume(resume);
+    console.log(`[SUCCESS] Added position '${flags.title || 'Job Title'}' at '${flags.company || 'Company'}'`);
+    break;
+  }
+
+  case "add-edu": {
+    const resume = loadActiveResume();
+    resume.education = resume.education || [];
+
+    resume.education.push({
+      id: `edu_${Date.now()}`,
+      degree: flags.degree || "Degree",
+      school: flags.school || "University",
+      location: flags.location || "",
+      startDate: flags.start || "",
+      endDate: flags.end || flags.year || "",
+      gpa: flags.gpa || ""
+    });
+
+    saveActiveResume(resume);
+    console.log(`[SUCCESS] Added education '${flags.degree || 'Degree'}' at '${flags.school || 'University'}'`);
+    break;
+  }
+
+  case "add-skill": {
+    const resume = loadActiveResume();
+    resume.skills = resume.skills || { technical: [], soft: [] };
+
+    if (flags.tech) {
+      const skills = flags.tech.split(",").map(s => s.trim()).filter(Boolean);
+      resume.skills.technical.push(...skills);
+      resume.skills.technical = Array.from(new Set(resume.skills.technical));
+    }
+    if (flags.soft) {
+      const skills = flags.soft.split(",").map(s => s.trim()).filter(Boolean);
+      resume.skills.soft.push(...skills);
+      resume.skills.soft = Array.from(new Set(resume.skills.soft));
+    }
+
+    saveActiveResume(resume);
+    console.log(`[SUCCESS] Added skills to active resume.`);
+    break;
+  }
+
+  case "show": {
+    const resume = loadActiveResume();
+    const ats = analyzeATS(resume);
+
+    console.log(`\n==================================================`);
+    console.log(`RESUME: ${resume.title || resume.personal.fullName}`);
+    console.log(`Role: ${resume.personal.jobTitle}`);
+    console.log(`Contact: ${resume.personal.email || 'N/A'} | ${resume.personal.phone || 'N/A'} | ${resume.personal.location || 'N/A'}`);
+    console.log(`Template: ${resume.template} | Accent Color: ${resume.color}`);
+    console.log(`Positions: ${resume.experience.length} | Education: ${resume.education.length} | Skills: ${resume.skills.technical.length}`);
+    console.log(`--------------------------------------------------`);
+    console.log(`ATS SCORE: ${ats.score}/100 [${ats.rating.toUpperCase()}]`);
+    console.log(`Action Verbs Found: ${ats.detectedVerbs.length} | Key Metrics Detected: ${ats.metricCount}`);
+    if (ats.suggestions.length > 0) {
+      console.log(`\nImprovement Suggestions:`);
+      ats.suggestions.forEach(s => console.log(` - ${s}`));
+    }
+    console.log(`==================================================\n`);
+    break;
+  }
+
+  case "export-pdf": {
+    const out = flags.out || path.join(__dirname, "..", "resume.pdf");
+    const htmlPath = path.join(__dirname, "..", "index.html");
+    const ok = tryExportHeadlessPDF(htmlPath, out);
+    if (!ok) {
+      console.error(`[ERROR] Could not generate PDF headlessly. Open index.html in browser and click 'Download PDF'.`);
+      process.exit(1);
+    }
+    break;
+  }
+
+  case "help":
+  default:
+    console.log(`
+Antigravity Resume CLI (resume-cli)
+Usage:
+  node bin/resume-cli generate --name "<Name>" --title "<Title>" [--input file.json] [--template london] [--out-dir <path>]
+  node bin/resume-cli create --name "<Name>" --title "<Title>" --email "<Email>"
+  node bin/resume-cli add-job --title "<Title>" --company "<Company>" --start "YYYY-MM" --bullets "B1;B2"
+  node bin/resume-cli add-edu --degree "<Degree>" --school "<School>" --year "YYYY"
+  node bin/resume-cli add-skill --tech "React, Go, Docker" --soft "Leadership"
+  node bin/resume-cli show
+  node bin/resume-cli export-pdf --out <path.pdf>
+    `);
+    break;
+}

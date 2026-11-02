@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Maker · ATS Optimized</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/templates.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       Resume.io Clean Header Bar
+       ====================================================================== -->
+  <header class="app-header no-print">
+    <div class="brand-section">
+      <div class="brand-logo" title="ATS Resume Builder">ATS</div>
+      <input type="text" id="resumeTitleInput" class="doc-title-input" value="Alex Morgan - Resume" title="Click to rename document">
+      <div id="atsScorePill" class="ats-score-pill" title="Real-time Applicant Tracking System score">
+        <div id="atsScoreDot" class="ats-score-dot"></div>
+        <span id="atsScoreText">Resume score: 95%</span>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Profile Preset -->
+      <div class="control-group">
+        <label for="profilePresetSelect">Preset:</label>
+        <select id="profilePresetSelect" class="app-select">
+          <option value="software_engineer">Software Engineer</option>
+          <option value="product_manager">Product Manager</option>
+          <option value="blank">Blank (From Scratch)</option>
+        </select>
+      </div>
+
+      <!-- Template Selector -->
+      <div class="control-group">
+        <label for="templateSelect">Template:</label>
+        <select id="templateSelect" class="app-select">
+          <option value="london">London (Classic ATS Standard)</option>
+          <option value="stockholm">Stockholm (Modern 2-Column)</option>
+          <option value="toronto">Toronto (Bold Header Banner)</option>
+          <option value="dublin">Dublin (Minimalist Executive)</option>
+          <option value="vienna">Vienna (Corporate Timeline)</option>
+          <option value="sydney">Sydney (Creative Contrast)</option>
+          <option value="berlin">Berlin (Tech & Engineering)</option>
+          <option value="athens">Athens (Academic Serif)</option>
+        </select>
+      </div>
+
+      <!-- Color Theme Swatches -->
+      <div class="control-group">
+        <label>Theme:</label>
+        <div class="color-swatch-list">
+          <div class="color-swatch active" style="background: #1a91f0;" data-color="#1a91f0" title="Resume.io Blue"></div>
+          <div class="color-swatch" style="background: #084C41;" data-color="#084C41" title="Forest Emerald"></div>
+          <div class="color-swatch" style="background: #172F53;" data-color="#172F53" title="Midnight Navy"></div>
+          <div class="color-swatch" style="background: #18181B;" data-color="#18181B" title="Charcoal Dark"></div>
+          <div class="color-swatch" style="background: #87300D;" data-color="#87300D" title="Warm Rust"></div>
+          <div class="color-swatch" style="background: #5121CA;" data-color="#5121CA" title="Deep Violet"></div>
+          <input type="color" id="customColorPicker" class="color-input-custom" value="#1a91f0" title="Custom Color">
+        </div>
+      </div>
+
+      <!-- Font Selector -->
+      <div class="control-group">
+        <label for="fontSelect">Font:</label>
+        <select id="fontSelect" class="app-select">
+          <option value="'Inter', sans-serif">Inter (Modern Clean)</option>
+          <option value="'Roboto', sans-serif">Roboto (Technical)</option>
+          <option value="Arial, sans-serif">Arial (Universal ATS)</option>
+          <option value="'Georgia', serif">Georgia (Executive Serif)</option>
+          <option value="'Garamond', serif">Garamond (Traditional)</option>
+        </select>
+      </div>
+
+      <!-- Spacing Density -->
+      <div class="control-group">
+        <label for="densitySelect">Density:</label>
+        <select id="densitySelect" class="app-select">
+          <option value="density-normal">Normal</option>
+          <option value="density-compact">Compact (Fit 1 Page)</option>
+          <option value="density-spacious">Spacious</option>
+        </select>
+      </div>
+
+      <!-- Primary Action Buttons -->
+      <div style="display:flex; gap:8px; margin-left:4px;">
+        <button id="downloadPdfBtn" class="btn btn-primary" title="Export as A4 printable PDF">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </button>
+        <button id="printBtn" class="btn btn-secondary" title="Direct browser vector print">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Print
+        </button>
+        <button id="saveJsonBtn" class="btn btn-outline btn-sm" title="Backup Resume to JSON">Save JSON</button>
+        <button id="loadJsonBtn" class="btn btn-outline btn-sm" title="Restore Resume from JSON">Load JSON</button>
+        <button id="syncCliBtn" class="btn btn-outline btn-sm" title="Reload latest data from CLI">Sync CLI</button>
+        <input type="file" id="jsonFileInput" class="visually-hidden" accept=".json">
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       Main Split Canvas
+       ====================================================================== -->
+  <main class="app-main">
+
+    <!-- Left Editor Pane (Resume.io Clean White Cards) -->
+    <aside class="editor-sidebar no-print">
+
+      <!-- Card 1: Personal Details -->
+      <div class="rio-card">
+        <h2 class="rio-card-title">Personal Details</h2>
+        <p class="rio-card-subtitle">Get discovered by recruiters with standard, accurate contact information.</p>
+        
+        <div class="rio-form-grid">
+          <div class="rio-field rio-form-full">
+            <label class="rio-label">Wanted Job Title</label>
+            <input type="text" id="inputJobTitle" class="rio-input" placeholder="e.g. Senior Full Stack Engineer">
+          </div>
+
+          <div class="rio-field">
+            <label class="rio-label">First Name</label>
+            <input type="text" id="inputFirstName" class="rio-input" placeholder="Alex">
+          </div>
+          <div class="rio-field">
+            <label class="rio-label">Last Name</label>
+            <input type="text" id="inputLastName" class="rio-input" placeholder="Morgan">
+          </div>
+
+          <div class="rio-field">
+            <label class="rio-label">Email</label>
+            <input type="email" id="inputEmail" class="rio-input" placeholder="alex@email.com">
+          </div>
+          <div class="rio-field">
+            <label class="rio-label">Phone</label>
+            <input type="text" id="inputPhone" class="rio-input" placeholder="+1 (555) 234-5678">
+          </div>
+
+          <div class="rio-field">
+            <label class="rio-label">City, State / Country</label>
+            <input type="text" id="inputLocation" class="rio-input" placeholder="San Francisco, CA">
+          </div>
+          <div class="rio-field">
+            <label class="rio-label">LinkedIn Profile URL</label>
+            <input type="text" id="inputLinkedin" class="rio-input" placeholder="linkedin.com/in/alexmorgan">
+          </div>
+
+          <div class="rio-field">
+            <label class="rio-label">GitHub URL</label>
+            <input type="text" id="inputGithub" class="rio-input" placeholder="github.com/alexmorgan">
+          </div>
+          <div class="rio-field">
+            <label class="rio-label">Portfolio / Website</label>
+            <input type="text" id="inputWebsite" class="rio-input" placeholder="alexmorgan.dev">
+          </div>
+
+          <div class="rio-field rio-form-full" style="background:#f8fafc; border:1px dashed #cbd5e1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="rio-label" style="margin:0;">Profile Photo (Optional for international templates)</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <input type="file" id="inputPhotoFile" accept="image/*" class="visually-hidden">
+                <button type="button" id="uploadPhotoBtn" class="btn btn-secondary btn-sm">Upload Photo</button>
+                <button type="button" id="removePhotoBtn" class="btn btn-outline btn-sm" style="display:none;">Remove</button>
+                <span id="photoFileName" style="font-size:0.8em; color:#64748b;">No photo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Professional Summary -->
+      <div class="rio-card">
+        <h2 class="rio-card-title">Professional Summary</h2>
+        <p class="rio-card-subtitle">Write 2–4 short, impactful sentences highlighting your years of experience, core tech stack, and achievements.</p>
+        
+        <div class="rio-field">
+          <label class="rio-label">Summary Statement</label>
+          <textarea id="inputSummary" class="rio-input" placeholder="Results-driven software engineer with 7+ years of experience..."></textarea>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+          <span style="font-size:0.75em; color:#64748b;">Recommended: 30–80 words for optimal ATS parsing</span>
+          <span id="summaryWordCount" style="font-size:0.75em; font-weight:600; color:#059669;">0 words</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Employment History (Uncluttered Collapsible Rows) -->
+      <div class="rio-card">
+        <div class="rio-card-title">
+          <span>Employment History</span>
+          <span style="font-size:0.75em; font-weight:500; color:#64748b;" id="expCountLabel">3 positions</span>
+        </div>
+        <p class="rio-card-subtitle">Show your relevant experience (last 10 years). Use bullet points beginning with action verbs and quantifiable results.</p>
+        
+        <div id="experienceItemsContainer" class="rio-items-list">
+          <!-- Collapsible Employment Items Injected via app.js -->
+        </div>
+
+        <button type="button" id="addExperienceBtn" class="btn-add-item">
+          + Add One More Employment
+        </button>
+      </div>
+
+      <!-- Card 4: Education (Uncluttered Collapsible Rows) -->
+      <div class="rio-card">
+        <div class="rio-card-title">
+          <span>Education</span>
+          <span style="font-size:0.75em; font-weight:500; color:#64748b;" id="eduCountLabel">1 degree</span>
+        </div>
+        <p class="rio-card-subtitle">A varied education on your resume sums up the foundation and credibility you bring.</p>
+        
+        <div id="educationItemsContainer" class="rio-items-list">
+          <!-- Collapsible Education Items Injected via app.js -->
+        </div>
+
+        <button type="button" id="addEducationBtn" class="btn-add-item">
+          + Add One More Education
+        </button>
+      </div>
+
+      <!-- Card 5: Skills & Competencies -->
+      <div class="rio-card">
+        <h2 class="rio-card-title">Skills &amp; Competencies</h2>
+        <p class="rio-card-subtitle">Select 6–12 relevant skills that match the job descriptions you are targeting.</p>
+        
+        <div class="rio-form-grid">
+          <div class="rio-field rio-form-full">
+            <label class="rio-label">Technical Skills (Comma separated)</label>
+            <input type="text" id="inputTechSkills" class="rio-input" placeholder="TypeScript, Go, React, Kubernetes, AWS, PostgreSQL, Docker">
+          </div>
+          <div class="rio-field rio-form-full">
+            <label class="rio-label">Core Strengths / Leadership (Comma separated)</label>
+            <input type="text" id="inputSoftSkills" class="rio-input" placeholder="System Architecture, Cross-Functional Leadership, Agile & Scrum">
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6: Key Projects -->
+      <div class="rio-card">
+        <h2 class="rio-card-title">Key Projects</h2>
+        <p class="rio-card-subtitle">Highlight relevant personal, open-source, or commercial projects.</p>
+        
+        <div id="projectItemsContainer" class="rio-items-list">
+          <!-- Collapsible Project Items Injected via app.js -->
+        </div>
+
+        <button type="button" id="addProjectBtn" class="btn-add-item">
+          + Add One More Project
+        </button>
+      </div>
+
+      <!-- Card 7: Certifications & Licenses -->
+      <div class="rio-card">
+        <h2 class="rio-card-title">Certifications &amp; Licenses</h2>
+        <p class="rio-card-subtitle">Industry-recognized credentials that validate your expertise.</p>
+        
+        <div id="certificationItemsContainer" class="rio-items-list">
+          <!-- Collapsible Certification Items Injected via app.js -->
+        </div>
+
+        <button type="button" id="addCertBtn" class="btn-add-item">
+          + Add One More Certification
+        </button>
+      </div>
+
+      <!-- Card 8: Custom Section -->
+      <div class="rio-card">
+        <h2 class="rio-card-title">Custom Section (Optional)</h2>
+        <p class="rio-card-subtitle">Add custom achievements such as Patents, Publications, Awards, or Languages.</p>
+        
+        <div class="rio-form-grid">
+          <div class="rio-field rio-form-full">
+            <label class="rio-label">Section Heading</label>
+            <input type="text" id="inputCustomTitle" class="rio-input" placeholder="e.g. Patents & Publications">
+          </div>
+          <div class="rio-field rio-form-full">
+            <label class="rio-label">Bullet Items (One per line)</label>
+            <textarea id="inputCustomItems" class="rio-input" placeholder="US Patent 11,245,678 - Dynamic Load Balancing&#10;Keynote Speaker at QCon San Francisco"></textarea>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Right Live Preview Canvas -->
+    <section class="preview-wrapper">
+      
+      <!-- Preview Floating Bar -->
+      <div class="preview-toolbar no-print">
+        <div class="control-group">
+          <label>Zoom:</label>
+          <button type="button" id="zoomOutBtn" class="btn btn-secondary btn-sm">-</button>
+          <span id="zoomLevelText" style="font-size:0.85em; font-weight:700; min-width:38px; text-align:center;">100%</span>
+          <button type="button" id="zoomInBtn" class="btn btn-secondary btn-sm">+</button>
+          <button type="button" id="zoomFitBtn" class="btn btn-outline btn-sm">Fit</button>
+        </div>
+        <div style="font-size:0.82em; color:#64748b; font-weight:500;">
+          A4 Standard (210 × 297mm) · Printable
+        </div>
+      </div>
+
+      <!-- Scalable Virtual Sheet -->
+      <div id="scaleContainer" class="scale-container">
+        <div id="resumePaper" class="resume-paper density-normal">
+          <!-- Dynamic Content Injected by templates.js -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="data/resume_data.js"></script>
+  <script src="lib/html2pdf.bundle.min.js"></script>
+  <script src="js/sample-data.js"></script>
+  <script src="js/ats-checker.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

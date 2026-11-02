@@ -1,0 +1,28 @@
+{
+  "name": "resume-builder",
+  "version": "1.0.0",
+  "description": "ATS-optimized resume builder & candidate automation CLI with 8+ Resume.io templates, real-time scoring, and instant A4 PDF export.",
+  "main": "index.html",
+  "bin": {
+    "resume-cli": "./bin/resume-cli"
+  },
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "test": "node tools/verify_templates.js && node tools/verify_cli.js",
+    "cli": "node bin/resume-cli",
+    "generate": "node bin/resume-cli generate"
+  },
+  "keywords": [
+    "resume",
+    "cv",
+    "ats",
+    "resume-builder",
+    "resume-maker",
+    "resume-io",
+    "templates",
+    "antigravity",
+    "pdf"
+  ],
+  "author": "Bhadresh Das",
+  "license": "MIT"
+}

@@ -1,0 +1,702 @@
+/**
+ * ATS-Optimized Multi-Template Stylesheet
+ * Strict A4 Printing (210mm x 297mm) & Bullet-Proof Baseline Alignment
+ * Cloned and refined from Resume.io (London, Stockholm, Toronto, Dublin, Vienna, Sydney, Berlin, Athens)
+ */
+
+:root {
+  --accent-color: #1a91f0;
+  --accent-light: rgba(26, 145, 240, 0.08);
+  --accent-border: rgba(26, 145, 240, 0.25);
+  --text-dark: #1e293b;
+  --text-muted: #475569;
+  --text-light: #64748b;
+  --border-color: #e2e8f0;
+  --bg-sidebar: #f8fafc;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --base-font-size: 9.8pt;
+  --section-gap: 15px;
+  --item-gap: 11px;
+}
+
+/* ==========================================================================
+   Virtual A4 Sheet Canvas (Exact 210mm x 297mm)
+   ========================================================================== */
+.resume-paper {
+  width: 210mm;
+  min-height: 297mm;
+  background: #ffffff;
+  margin: 0 auto;
+  box-shadow: 0 4px 20px -2px rgba(15, 56, 113, 0.12), 0 2px 6px -1px rgba(15, 56, 113, 0.08);
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  font-size: var(--base-font-size);
+  color: var(--text-dark);
+  line-height: 1.45;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+/* Density Modifiers */
+.density-compact {
+  --base-font-size: 9pt;
+  --section-gap: 10px;
+  --item-gap: 8px;
+  line-height: 1.35;
+}
+.density-normal {
+  --base-font-size: 9.8pt;
+  --section-gap: 15px;
+  --item-gap: 11px;
+  line-height: 1.45;
+}
+.density-spacious {
+  --base-font-size: 10.5pt;
+  --section-gap: 20px;
+  --item-gap: 14px;
+  line-height: 1.55;
+}
+
+/* Generic Semantic Elements */
+.resume-paper h1, 
+.resume-paper h2, 
+.resume-paper h3, 
+.resume-paper h4, 
+.resume-paper p {
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   BULLET POINT & LIST OPTIMIZATIONS
+   Ensures bullet dots are anchored to text and NEVER wrap to a new line alone
+   ========================================================================== */
+.resume-paper ul {
+  list-style-type: disc !important;
+  list-style-position: outside !important;
+  margin: 4px 0 0 1.25em !important;
+  padding: 0 !important;
+}
+
+.resume-paper li {
+  margin-bottom: 3.5px;
+  color: #334155;
+  line-height: 1.42;
+  word-break: normal;
+  overflow-wrap: break-word;
+  padding-left: 2px;
+}
+
+.resume-paper a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.resume-entry {
+  margin-bottom: var(--item-gap);
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.resume-section {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.resume-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.resume-entry-title {
+  font-weight: 700;
+  font-size: 1.05em;
+  color: var(--text-dark);
+}
+
+.resume-entry-subtitle {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.95em;
+}
+
+.resume-entry-date, .resume-entry-location {
+  font-size: 0.88em;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.skills-chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.skill-chip {
+  background: #f1f5f9;
+  color: #334155;
+  border-radius: 4px;
+  padding: 2.5px 8px;
+  font-size: 0.86em;
+  font-weight: 500;
+  display: inline-block;
+  border: 1px solid var(--border-color);
+  line-height: 1.3;
+}
+
+/* Contact Row with CSS Pseudo-element Dots (Eliminates Orphan Wrapping Dots) */
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  font-size: 0.88em;
+  color: var(--text-muted);
+}
+
+.contact-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.contact-item:not(:first-child)::before {
+  content: "•";
+  display: inline-block;
+  margin-right: 10px;
+  color: var(--text-light);
+  font-size: 0.9em;
+}
+
+.photo-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-color);
+}
+
+
+/* ==========================================================================
+   TEMPLATE 1: LONDON (Classic Corporate & ATS Gold Standard)
+   Clean single-column with centered header and underlined accent bars
+   ========================================================================== */
+.tpl-london {
+  padding: 20mm 18mm;
+}
+
+.tpl-london .resume-header {
+  text-align: center;
+  margin-bottom: var(--section-gap);
+}
+
+.tpl-london .candidate-name {
+  font-size: 2.1em;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+}
+
+.tpl-london .candidate-role {
+  font-size: 1.12em;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-top: 3px;
+  margin-bottom: 7px;
+}
+
+.tpl-london .contact-row {
+  justify-content: center;
+}
+
+.tpl-london .section-heading {
+  font-size: 1.02em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent-color);
+  border-bottom: 1.5px solid var(--accent-color);
+  padding-bottom: 3px;
+  margin-bottom: 9px;
+  margin-top: var(--section-gap);
+}
+
+.tpl-london .resume-section:first-of-type .section-heading {
+  margin-top: 0;
+}
+
+
+/* ==========================================================================
+   TEMPLATE 2: STOCKHOLM (Modern Clean Two-Column)
+   Asymmetric 2-column with left sidebar for skills, contact, education
+   ========================================================================== */
+.tpl-stockholm {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 66mm 1fr;
+  min-height: 297mm;
+}
+
+.tpl-stockholm .stockholm-sidebar {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  padding: 18mm 12mm;
+  box-sizing: border-box;
+}
+
+.tpl-stockholm .stockholm-main {
+  padding: 18mm 16mm;
+  box-sizing: border-box;
+}
+
+.tpl-stockholm .candidate-name {
+  font-size: 1.9em;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-dark);
+}
+
+.tpl-stockholm .candidate-role {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.tpl-stockholm .section-heading {
+  font-size: 0.92em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  color: var(--accent-color);
+  margin-bottom: 7px;
+  margin-top: var(--section-gap);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 3px;
+}
+
+.tpl-stockholm .stockholm-sidebar .section-heading {
+  color: var(--text-dark);
+  border-bottom-color: var(--accent-color);
+}
+
+.tpl-stockholm .contact-row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 0.88em;
+}
+
+.tpl-stockholm .contact-item:not(:first-child)::before {
+  display: none;
+}
+
+
+/* ==========================================================================
+   TEMPLATE 3: TORONTO (Contemporary Bold Colored Header Banner)
+   High-impact solid color banner with white text, modern 2-col cards
+   ========================================================================== */
+.tpl-toronto {
+  padding: 0;
+}
+
+.tpl-toronto .toronto-header {
+  background: var(--accent-color);
+  color: #ffffff;
+  padding: 16mm 18mm 14mm;
+}
+
+.tpl-toronto .toronto-header .candidate-name {
+  font-size: 2.1em;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.tpl-toronto .toronto-header .candidate-role {
+  font-size: 1.1em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  margin-top: 3px;
+  margin-bottom: 8px;
+}
+
+.tpl-toronto .toronto-header .contact-row {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.tpl-toronto .toronto-header a {
+  color: #ffffff;
+}
+
+.tpl-toronto .toronto-header .contact-item:not(:first-child)::before {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.tpl-toronto .toronto-body {
+  padding: 16mm 18mm;
+}
+
+.tpl-toronto .section-heading {
+  font-size: 0.98em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: var(--section-gap);
+  margin-bottom: 9px;
+}
+
+.tpl-toronto .section-heading::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 15px;
+  background: var(--accent-color);
+  border-radius: 2px;
+}
+
+
+/* ==========================================================================
+   TEMPLATE 4: DUBLIN (Minimalist High-Density ATS)
+   Pure linear flow with discreet left-accent markings
+   ========================================================================== */
+.tpl-dublin {
+  padding: 18mm 18mm;
+}
+
+.tpl-dublin .candidate-name {
+  font-size: 2em;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.tpl-dublin .candidate-role {
+  font-size: 1.08em;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-top: 3px;
+  margin-bottom: 7px;
+}
+
+.tpl-dublin .section-heading {
+  font-size: 0.94em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  color: var(--accent-color);
+  padding-left: 8px;
+  border-left: 3px solid var(--accent-color);
+  margin-top: var(--section-gap);
+  margin-bottom: 9px;
+}
+
+
+/* ==========================================================================
+   TEMPLATE 5: VIENNA (Sophisticated Corporate with Timeline)
+   Serif font elegance with delicate hairline separators
+   ========================================================================== */
+.tpl-vienna {
+  padding: 18mm 18mm;
+  font-family: 'Georgia', serif;
+}
+
+.tpl-vienna .candidate-name {
+  font-size: 2.1em;
+  font-weight: 700;
+  color: var(--text-dark);
+  font-family: 'Georgia', serif;
+  text-align: center;
+}
+
+.tpl-vienna .candidate-role {
+  font-size: 1.05em;
+  font-style: italic;
+  color: var(--accent-color);
+  text-align: center;
+  margin-top: 3px;
+  margin-bottom: 7px;
+}
+
+.tpl-vienna .contact-row {
+  justify-content: center;
+  font-family: -apple-system, sans-serif;
+  font-size: 0.85em;
+}
+
+.tpl-vienna .section-heading {
+  font-size: 1.02em;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  color: var(--accent-color);
+  text-align: center;
+  margin-top: var(--section-gap);
+  margin-bottom: 11px;
+}
+
+.tpl-vienna .section-heading::before,
+.tpl-vienna .section-heading::after {
+  content: "";
+  display: inline-block;
+  width: 36px;
+  height: 1px;
+  background: var(--border-color);
+  vertical-align: middle;
+  margin: 0 10px;
+}
+
+
+/* ==========================================================================
+   TEMPLATE 6: SYDNEY (Creative Contrast Two-Column)
+   Vibrant full-bleed dark sidebar with high visual distinction
+   ========================================================================== */
+.tpl-sydney {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 68mm 1fr;
+  min-height: 297mm;
+}
+
+.tpl-sydney .sydney-sidebar {
+  background: var(--accent-color);
+  color: #ffffff;
+  padding: 18mm 12mm;
+  box-sizing: border-box;
+}
+
+.tpl-sydney .sydney-sidebar a {
+  color: #ffffff;
+}
+
+.tpl-sydney .sydney-sidebar .contact-row {
+  color: rgba(255, 255, 255, 0.9);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+}
+
+.tpl-sydney .sydney-sidebar .contact-item:not(:first-child)::before {
+  display: none;
+}
+
+.tpl-sydney .sydney-sidebar .section-heading {
+  color: #ffffff;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.3);
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding-bottom: 4px;
+  margin-top: var(--section-gap);
+  margin-bottom: 9px;
+}
+
+.tpl-sydney .sydney-sidebar .skill-chip {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.tpl-sydney .sydney-main {
+  padding: 18mm 16mm;
+  box-sizing: border-box;
+}
+
+.tpl-sydney .candidate-name {
+  font-size: 2em;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.tpl-sydney .candidate-role {
+  font-size: 1.08em;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-top: 3px;
+  margin-bottom: 12px;
+}
+
+.tpl-sydney .sydney-main .section-heading {
+  font-size: 0.98em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-color);
+  border-bottom: 1.5px solid var(--border-color);
+  padding-bottom: 3px;
+  margin-top: var(--section-gap);
+  margin-bottom: 9px;
+}
+
+
+/* ==========================================================================
+   TEMPLATE 7: BERLIN (Tech & Engineering Focus)
+   Dense, high-information layout with boxed badges and categorized skills
+   ========================================================================== */
+.tpl-berlin {
+  padding: 18mm 18mm;
+}
+
+.tpl-berlin .berlin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 8px;
+  margin-bottom: var(--section-gap);
+}
+
+.tpl-berlin .candidate-name {
+  font-size: 1.9em;
+  font-weight: 800;
+  color: var(--text-dark);
+}
+
+.tpl-berlin .candidate-role {
+  font-size: 1.05em;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-top: 2px;
+}
+
+.tpl-berlin .contact-row {
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.85em;
+  gap: 3px;
+}
+
+.tpl-berlin .contact-item:not(:first-child)::before {
+  display: none;
+}
+
+.tpl-berlin .section-heading {
+  font-size: 0.94em;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--accent-light);
+  color: var(--accent-color);
+  padding: 3.5px 8px;
+  border-left: 3px solid var(--accent-color);
+  margin-top: var(--section-gap);
+  margin-bottom: 8px;
+}
+
+
+/* ==========================================================================
+   TEMPLATE 8: ATHENS (Academic & Traditional Serif)
+   Double-line classic dividers, centered formal typography
+   ========================================================================== */
+.tpl-athens {
+  padding: 20mm 20mm;
+  font-family: 'Garamond', 'Georgia', serif;
+}
+
+.tpl-athens .resume-header {
+  text-align: center;
+  border-bottom: 3px double var(--text-dark);
+  padding-bottom: 10px;
+  margin-bottom: var(--section-gap);
+}
+
+.tpl-athens .candidate-name {
+  font-size: 2.2em;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: 0.5px;
+}
+
+.tpl-athens .candidate-role {
+  font-size: 1.12em;
+  font-style: italic;
+  color: var(--accent-color);
+  margin-top: 3px;
+  margin-bottom: 7px;
+}
+
+.tpl-athens .contact-row {
+  justify-content: center;
+  font-size: 0.88em;
+}
+
+.tpl-athens .section-heading {
+  font-size: 1.02em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-dark);
+  text-align: center;
+  border-bottom: 1px solid var(--text-dark);
+  padding-bottom: 3px;
+  margin-top: var(--section-gap);
+  margin-bottom: 9px;
+}
+
+
+/* ==========================================================================
+   PRINT STYLES: Strict Vector A4 Pagination
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print,
+  .app-sidebar,
+  .app-header,
+  .toolbar,
+  .zoom-controls,
+  .preview-toolbar {
+    display: none !important;
+  }
+
+  .app-main {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .preview-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+
+  .scale-container {
+    transform: none !important;
+  }
+
+  .resume-paper {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    border: none !important;
+  }
+
+  .resume-entry,
+  .resume-section {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}

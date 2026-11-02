@@ -1,0 +1,593 @@
+/**
+ * Resume.io Clean Card UI Stylesheet
+ * Replicates the clean, airy, uncluttered design language of Resume.io
+ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #f3f4f6;
+  color: #1e293b;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Header Bar (Resume.io Clean Style)
+   ========================================================================== */
+.app-header {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  z-index: 100;
+  gap: 16px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  background: #1a91f0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1em;
+  color: #ffffff;
+}
+
+.doc-title-input {
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 1.05em;
+  font-weight: 700;
+  color: #1e293b;
+  padding: 4px 8px;
+  border-radius: 4px;
+  outline: none;
+  width: 220px;
+  transition: all 0.15s;
+}
+
+.doc-title-input:hover {
+  background: #f1f5f9;
+}
+
+.doc-title-input:focus {
+  background: #ffffff;
+  border-color: #1a91f0;
+  box-shadow: 0 0 0 2px rgba(26, 145, 240, 0.2);
+}
+
+/* ATS Score Pill (Resume.io style) */
+.ats-score-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.82em;
+  font-weight: 700;
+  color: #059669;
+}
+
+.ats-score-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82em;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.app-select {
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 0.86em;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.app-select:focus {
+  border-color: #1a91f0;
+  box-shadow: 0 0 0 2px rgba(26, 145, 240, 0.15);
+}
+
+.color-swatch-list {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.18);
+}
+
+.color-swatch.active {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px #1a91f0;
+  transform: scale(1.15);
+}
+
+.color-input-custom {
+  width: 22px;
+  height: 22px;
+  border: none;
+  padding: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  background: transparent;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.84em;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  outline: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: #1a91f0;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(26, 145, 240, 0.3);
+}
+
+.btn-primary:hover {
+  background: #0d82df;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.btn-outline:hover {
+  background: #f8fafc;
+  color: #1e293b;
+}
+
+.btn-sm {
+  padding: 3px 8px;
+  font-size: 0.78em;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #fca5a5;
+}
+
+.btn-danger:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   Main Split Layout
+   ========================================================================== */
+.app-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 560px 1fr;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+@media (max-width: 1280px) {
+  .app-main {
+    grid-template-columns: 500px 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .app-main {
+    display: flex;
+    flex-direction: column;
+  }
+  .preview-wrapper {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   Left Editor Sidebar (Resume.io Clean White Cards)
+   ========================================================================== */
+.editor-sidebar {
+  background: #f3f4f6;
+  border-right: 1px solid #e2e8f0;
+  overflow-y: auto;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Resume.io Card Container */
+.rio-card {
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(15, 56, 113, 0.05);
+}
+
+.rio-card-title {
+  font-size: 1.15em;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rio-card-subtitle {
+  font-size: 0.84em;
+  color: #64748b;
+  margin: 0 0 16px 0;
+}
+
+/* Resume.io Soft Input Container */
+.rio-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.rio-form-full {
+  grid-column: span 2;
+}
+
+.rio-field {
+  background: #eff2f6;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.15s ease;
+}
+
+.rio-field:focus-within {
+  background: #ffffff;
+  border-color: #1a91f0;
+  box-shadow: 0 0 0 1px #1a91f0;
+}
+
+.rio-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 2px;
+  letter-spacing: 0.2px;
+}
+
+.rio-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #1e293b;
+  width: 100%;
+  font-family: inherit;
+  padding: 0;
+}
+
+textarea.rio-input {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   Uncluttered Repeating Items (Collapsible Summary Rows)
+   ========================================================================== */
+.rio-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rio-item-box {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #ffffff;
+  transition: all 0.15s ease;
+}
+
+.rio-item-box:hover {
+  border-color: #cbd5e1;
+}
+
+.rio-item-box.expanded {
+  border-color: #93c5fd;
+  box-shadow: 0 2px 6px rgba(15, 56, 113, 0.05);
+}
+
+/* Summary Row (Collapsed State) */
+.rio-item-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  cursor: pointer;
+  user-select: none;
+  background: #ffffff;
+  gap: 12px;
+}
+
+.rio-item-summary:hover {
+  background: #f8fafc;
+}
+
+.rio-item-title-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.rio-drag-icon {
+  color: #94a3b8;
+  cursor: grab;
+  font-size: 14px;
+}
+
+.rio-item-title {
+  font-weight: 600;
+  font-size: 0.9em;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rio-item-company {
+  font-size: 0.85em;
+  color: #64748b;
+  margin-left: 4px;
+}
+
+.rio-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.rio-item-date {
+  font-size: 0.8em;
+  color: #94a3b8;
+}
+
+.rio-chevron {
+  font-size: 0.7em;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+.rio-item-box.expanded .rio-chevron {
+  transform: rotate(180deg);
+}
+
+/* Expanded Form Body */
+.rio-item-body {
+  display: none;
+  padding: 14px 16px;
+  background: #fbfcfe;
+  border-top: 1px solid #f1f5f9;
+}
+
+.rio-item-box.expanded .rio-item-body {
+  display: block;
+}
+
+/* Bullet Points List */
+.rio-bullet-group {
+  margin-top: 10px;
+}
+
+.rio-bullet-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.rio-bullet-field {
+  flex: 1;
+  background: #eff2f6;
+  border-radius: 4px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+}
+
+.rio-bullet-field:focus-within {
+  background: #ffffff;
+  border-color: #1a91f0;
+}
+
+.rio-bullet-field textarea {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13.5px;
+  color: #1e293b;
+  font-family: inherit;
+  min-height: 44px;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+/* Add Item Button (Resume.io style) */
+.btn-add-item {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px dashed #93c5fd;
+  color: #1a91f0;
+  font-weight: 600;
+  font-size: 0.88em;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-add-item:hover {
+  background: #eff6ff;
+  border-color: #1a91f0;
+}
+
+/* Skills Tag Inputs */
+.rio-skills-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.rio-skill-tag {
+  background: #e2e8f0;
+  color: #1e293b;
+  border-radius: 14px;
+  padding: 4px 10px;
+  font-size: 0.82em;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rio-skill-tag .remove-tag {
+  cursor: pointer;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.rio-skill-tag .remove-tag:hover {
+  color: #dc2626;
+}
+
+/* ==========================================================================
+   Right Live Preview Canvas
+   ========================================================================== */
+.preview-wrapper {
+  background: #e2e8f0;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px;
+  position: relative;
+}
+
+.preview-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.scale-container {
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+}
+
+/* Visually Hidden */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
